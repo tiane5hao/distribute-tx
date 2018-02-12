@@ -1,5 +1,6 @@
 package com.zhengyun.tx;
 
+import com.zhengyun.util.ConnectionUtil;
 import com.zhengyun.util.GlobalTxStatus;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -59,7 +60,7 @@ public class TxHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DistributeTxFactory.releaseConnection(connection);
+            ConnectionUtil.releaseConnection(connection);
         }
         System.out.println("提交事务");
     }
@@ -74,7 +75,7 @@ public class TxHandler {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            DistributeTxFactory.releaseConnection(connection);
+            ConnectionUtil.releaseConnection(connection);
         }
     }
 

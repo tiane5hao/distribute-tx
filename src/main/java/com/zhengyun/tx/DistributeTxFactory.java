@@ -1,6 +1,7 @@
 package com.zhengyun.tx;
 
 import com.zhengyun.tx.annotation.Business;
+import com.zhengyun.util.ConnectionUtil;
 import com.zhengyun.util.PropertyUtil;
 import com.zhengyun.util.SpringContextHolder;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,7 +14,7 @@ import java.sql.Connection;
 
 public class DistributeTxFactory {
 
-    private static DataSource dataSource;
+
 
     public static TxHandler createTxHandler(ProceedingJoinPoint pjp){
         TxHandler txHandler = new TxHandler();
@@ -29,7 +30,7 @@ public class DistributeTxFactory {
             }else {
                 txHandler.setNessary(true);
                 txHandler.setPjp(pjp);
-                txHandler.setConnection(getConnection());
+                txHandler.setConnection(ConnectionUtil.getConnection());
             }
 
         }catch (Exception e){
@@ -39,25 +40,7 @@ public class DistributeTxFactory {
         return txHandler;
     }
 
-    private static Connection getConnection(){
-        initDataSource();
-        return DataSourceUtils.getConnection(dataSource);
-    }
 
-    private static  void initDataSource() {
-        if(dataSource == null){
-            synchronized (DistributeTxFactory.class){
-                if(dataSource == null){
-                    dataSource = (DataSource) SpringContextHolder.getBean("dataSource");
-                }
-            }
-
-        }
-    }
-
-    public static void releaseConnection(Connection conn){
-        DataSourceUtils.releaseConnection(conn, dataSource);
-    }
 
 
 }
