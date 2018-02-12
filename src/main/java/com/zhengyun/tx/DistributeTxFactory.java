@@ -30,6 +30,7 @@ public class DistributeTxFactory {
             }else {
                 txHandler.setNessary(true);
                 txHandler.setPjp(pjp);
+                //设置数据库连接
                 txHandler.setConnection(ConnectionUtil.getConnection());
             }
 

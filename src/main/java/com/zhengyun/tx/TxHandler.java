@@ -10,6 +10,9 @@ import java.sql.SQLException;
 
 public class TxHandler {
 
+    /**
+     * 是否包含事务注解，有true，没有false
+     */
     private boolean isNessary;
 
     private ProceedingJoinPoint pjp;
@@ -35,6 +38,7 @@ public class TxHandler {
     public void setNessary(boolean nessary) {
         isNessary = nessary;
         if(isNessary){
+            //嵌入spring事务，才能获取connection连接
             TransactionSynchronizationManager.setActualTransactionActive(true);
             TransactionSynchronizationManager.initSynchronization();
         }
